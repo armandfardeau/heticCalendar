@@ -12,8 +12,14 @@ class Coord_finder
         set_course_column
       when 'professor'
         set_professor_column
+      when 'day'
+        'B'
+      when 'month'
+        'C'
+      when 'year'
+        'D'
       else
-        raise 'You must request the following : room, course_title, professor'
+        raise 'You must request the following : room, course_title, professor, day, month, year'
     end
   end
 
