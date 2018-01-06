@@ -13,7 +13,7 @@ class Lecture
     @start_time = set_start_time
     @end_time = set_end_time
     @duration = set_duration
-    @group = 0
+    @group = set_group
   end
 
   def set_professor
@@ -45,7 +45,23 @@ class Lecture
 
   def set_room
     room = Coord_finder.new(@lecture_number, 'room')
-    @excel.cell(room.column, room.row)
+    room_arr = @excel.cell(room.column, room.row).lines.map(&:chomp)
+
+    return room_arr[0] if room_arr[1].nil?
+    if room_arr.size <= 2
+      if @lecture_number.odd?
+        room_arr[0]
+      else
+        room_arr[1]
+      end
+    else
+      room_arr.delete_at(0)
+      if @lecture_number.odd?
+        room_arr[0]
+      else
+        room_arr[1]
+      end
+    end
   end
 
   def set_start_time
@@ -82,6 +98,28 @@ class Lecture
 
   def set_duration
     @end_time.hour - @start_time.hour
+  end
+
+
+  def set_group
+    group_par_pos = @course_title =~ /\(/
+    return 3 if group_par_pos.nil?
+    group_index = @course_title[(group_par_pos + 1) .. -2]
+    group = ''
+    if group_index.size <= 5
+      if @lecture_number.odd?
+        group = group_index[1]
+      elsif @lecture_number.even?
+        group = group_index[4]
+      end
+    else
+      if @lecture_number.odd?
+        group = group_index[2..3]
+      elsif @lecture_number.even?
+        group = group_index[5..6]
+      end
+    end
+    group.to_i
   end
 
   def month_to_decimal(month)
@@ -146,4 +184,5 @@ class Lecture
       raise 'Not a valid request, valid request are: start, end'
     end
   end
+
 end

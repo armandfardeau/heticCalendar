@@ -18,6 +18,36 @@ def print_lecture(lecture)
   puts
 end
 
-1.upto(20) do |i|
-  print_lecture Lecture.new(excel, i)
+def lecture_to_ical(lecture, cal)
+  event = Icalendar::Event.new
+  event.dtstart = Icalendar::Values::DateTime.new(lecture.start_time)
+  event.dtend = Icalendar::Values::DateTime.new(lecture.end_time)
+  event.summary = lecture.course_title
+  event.description = "Professor: #{lecture.professor}\nGroup : G#{lecture.group}\nRoom: #{lecture.room}\nDuration: #{lecture.duration} h"
+  event.ip_class = "PRIVATE"
+  cal.add_event(event)
+end
+
+@cal = Icalendar::Calendar.new
+
+# 1.upto(20) do |i|
+#   print_lecture lecture unless lecture.group == 2
+# end
+
+
+(1..20).each do |i|
+  lecture = Lecture.new(excel, i)
+  lecture_to_ical(lecture, @cal) unless lecture.group == 2
+end
+
+f = File.open('HeticCalendarG1.ics', 'w') {|file| file.write(@cal.to_ical)}
+begin
+  puts 'Success!'
+rescue
+  $stderr.print "IO failed: " + $!
+  f.close
+  File.delete(opName)
+  raise
+ensure
+  puts 'Execution is finished'
 end
