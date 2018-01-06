@@ -18,13 +18,29 @@ class Lecture
 
   def set_professor
     professor = Coord_finder.new(@lecture_number, 'professor')
-    @excel.cell(professor.column, professor.row)
+    professor_arr = @excel.cell(professor.column, professor.row).lines.map(&:chomp)
+
+    return professor_arr[0] if professor_arr[1].nil?
+
+    if @lecture_number.odd?
+      professor_arr[0]
+    else
+      professor_arr[1]
+    end
   end
 
 
   def set_course_title
     course = Coord_finder.new(@lecture_number, 'course_title')
-    @excel.cell(course.column, course.row)
+    course_arr = @excel.cell(course.column, course.row).lines.map(&:chomp)
+
+    return course_arr[0] if course_arr[1].nil?
+
+    if @lecture_number.odd?
+      course_arr[0]
+    else
+      course_arr[1]
+    end
   end
 
   def set_room

@@ -8,13 +8,14 @@ require_relative 'Lecture'
 excel = Transform.new(ARGV[0]).read
 
 def print_lecture(lecture)
-  puts lecture.course_title
-  puts lecture.professor
-  puts lecture.room
-  puts lecture.start_time
-  puts lecture.end_time
-  puts lecture.duration
-  puts lecture.group
+  puts "Course title: #{lecture.course_title}"
+  puts "Professor: #{lecture.professor}"
+  puts "Room: #{lecture.room}"
+  puts "Start time: #{lecture.start_time}"
+  puts "End time: #{lecture.end_time}"
+  puts "Duration: #{lecture.duration} h"
+  puts "Group : G#{lecture.group}"
+  puts
 end
 
 1.upto(20) do |i|
