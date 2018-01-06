@@ -124,7 +124,7 @@ class Lecture
 
   def month_to_decimal(month)
     case month
-      when 'jan'
+      when 'janv'
         1
       when 'fèv'
         2
