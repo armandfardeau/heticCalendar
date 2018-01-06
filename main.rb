@@ -2,31 +2,21 @@
 #!/usr/bin/env ruby
 
 require_relative 'transform'
-require_relative 'lecture'
 require 'icalendar'
+require_relative 'Lecture'
 
 excel = Transform.new(ARGV[0]).read
-@cal = Icalendar::Calendar.new
-(1..10).each do |i|
-  input = Lecture.new(excel, i)
 
-  event = Icalendar::Event.new
-  event.dtstart = Icalendar::Values::DateTime.new(input.start_time)
-  event.dtend = Icalendar::Values::DateTime.new(input.end_time)
-  event.summary = input.lecture_name
-  event.description = input.lecturer_name
-  event.ip_class = "PRIVATE"
-  @cal.add_event(event)
+def print_lecture(lecture)
+  puts lecture.course_title
+  puts lecture.professor
+  puts lecture.room
+  puts lecture.start_time
+  puts lecture.end_time
+  puts lecture.duration
+  puts lecture.group
 end
 
-f = File.open('HeticCalendar.ics', 'w') {|file| file.write(@cal.to_ical)}
-begin
-  puts 'Success!'
-rescue
-  $stderr.print "IO failed: " + $!
-  f.close
-  File.delete(opName)
-  raise
-ensure
-  puts 'Execution is finished'
+1.upto(20) do |i|
+  print_lecture Lecture.new(excel, i)
 end
