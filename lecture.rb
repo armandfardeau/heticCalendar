@@ -126,7 +126,7 @@ class Lecture
     case month
       when 'janv'
         1
-      when 'fèv'
+      when 'fév'
         2
       when 'mar'
         3
